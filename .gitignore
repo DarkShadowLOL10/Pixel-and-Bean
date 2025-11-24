@@ -1,0 +1,34 @@
+# Pixel & Bean - ignore file
+# Compiled classes
+*.class
+
+# Output / build directories
+/out/
+/dist/
+/build/
+/target/
+
+# IDE specific
+.idea/
+*.iml
+.nb-gradle/
+nbproject/private/
+
+# Logs / temp
+*.log
+*.tmp
+~$*
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Screenshots and raw assets (keep final evidence folder)
+/docs/entregas/images/raw/
+
+# Generated jars
+*.jar
+
+# Ignore anything under bin if created
+/bin/
+
