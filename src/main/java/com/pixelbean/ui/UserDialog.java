@@ -142,6 +142,8 @@ public class UserDialog extends JDialog {
     
     private void loadUserData() {
         usernameField.setText(user.getUsername());
+        // Note: In a real system, password should not be displayed
+        // For this prototype, we show it for ease of testing
         passwordField.setText(user.getPassword());
         fullNameField.setText(user.getFullName());
         roleComboBox.setSelectedItem(user.getRole());

@@ -39,6 +39,16 @@ public class UserService {
         users.put(operator.getId(), operator);
     }
     
+    /**
+     * Authenticates a user with username and password.
+     * 
+     * NOTE: This is a prototype implementation with plain text passwords.
+     * In a production system, passwords should be hashed using BCrypt or Argon2.
+     * 
+     * @param username the username
+     * @param password the password in plain text
+     * @return the authenticated User or null if authentication fails
+     */
     public User authenticate(String username, String password) {
         Optional<User> user = users.values().stream()
                 .filter(u -> u.getUsername().equals(username) 

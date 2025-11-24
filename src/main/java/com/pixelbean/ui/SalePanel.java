@@ -29,6 +29,9 @@ public class SalePanel extends JPanel {
     private JLabel totalLabel;
     private JButton completeSaleButton, clearButton;
     
+    private static final int MIN_QUANTITY = 1;
+    private static final int MAX_QUANTITY = 100;
+    
     public SalePanel(User currentUser) {
         this.currentUser = currentUser;
         this.productService = ProductService.getInstance();
@@ -70,7 +73,7 @@ public class SalePanel extends JPanel {
         selectionPanel.add(productComboBox);
         
         selectionPanel.add(new JLabel("Cantidad:"));
-        quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+        quantitySpinner = new JSpinner(new SpinnerNumberModel(MIN_QUANTITY, MIN_QUANTITY, MAX_QUANTITY, 1));
         quantitySpinner.setPreferredSize(new Dimension(60, 25));
         selectionPanel.add(quantitySpinner);
         
@@ -168,7 +171,7 @@ public class SalePanel extends JPanel {
         updateTotal();
         
         // Reset spinner
-        quantitySpinner.setValue(1);
+        quantitySpinner.setValue(MIN_QUANTITY);
     }
     
     private void removeItem() {
@@ -248,6 +251,6 @@ public class SalePanel extends JPanel {
         currentSale.setUser(currentUser);
         updateItemsTable();
         updateTotal();
-        quantitySpinner.setValue(1);
+        quantitySpinner.setValue(MIN_QUANTITY);
     }
 }
