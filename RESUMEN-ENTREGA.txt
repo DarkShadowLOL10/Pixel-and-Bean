@@ -1,0 +1,70 @@
+# RESUMEN FINAL - CLASE 2 ENTREGADA
+
+## Estado: COMPLETADO ✓
+
+### Lo que se hizo hoy (2025-11-23):
+1. ✓ Todas las vistas implementadas (Usuarios, Productos, Ventas, Reportes, Eventos)
+2. ✓ Servicios stub funcionando en memoria
+3. ✓ CardLayout para navegación entre vistas
+4. ✓ Búsqueda incremental en Usuarios y Productos
+5. ✓ Validaciones básicas implementadas
+6. ✓ Capturas de pantalla guardadas en: docs/entregas/images/screenshots/
+7. ✓ README completo y actualizado
+8. ✓ Proyecto compilado y ejecutado exitosamente
+9. ✓ .gitignore creado
+10. ✓ Commits realizados
+
+### Commits realizados:
+- Commit 1: "Clase 2: Alpha UI completa"
+  Hash: 5acdb04a4717b43affd4042d14c81b04bc1404cf
+- Commit 2: "Actualizar hash del commit en README"
+- Commit 3: "Resolver conflicto: mantener README completo de Clase 2"
+
+# RESUMEN FINAL - CLASE 2 ENTREGADA
+
+## Estado: COMPLETADO ✓
+
+### REQUISITOS CUMPLIDOS:
+
+1. ✓ Link GitHub al commit de la clase
+   - Repositorio: https://github.com/DarkShadowLOL10/Pixel-and-Bean
+   - Commit: 5acdb04a4717b43affd4042d14c81b04bc1404cf
+   - Link directo: https://github.com/DarkShadowLOL10/Pixel-and-Bean/commit/5acdb04a4717b43affd4042d14c81b04bc1404cf
+
+2. ✓ Documento con pantallazos de implementación (1 por archivo nuevo)
+   - Archivo: docs/entregas/IMPLEMENTACION-ARCHIVOS-NUEVOS.md
+   - Contiene: 20 archivos documentados con capturas y descripciones
+   - Incluye: LoginFrame, MainFrame, 5 paneles, 4 modelos, 6 servicios, configuración
+
+3. ✓ Documento con pantallazos de ejecución (1 por ventana y funcionalidad)
+   - Archivo: docs/entregas/CLASE2-EVIDENCIAS.md
+   - Contiene: 10 capturas con descripciones detalladas
+   - Incluye: Login, MainFrame, Usuarios, Productos, Ventas, Reportes, Eventos, Acerca de, Git/GitHub
+
+### Para verificar:
+Ve a: https://github.com/DarkShadowLOL10/Pixel-and-Bean
+Deberías ver:
+- README.md con toda la información de la Clase 2
+- Carpeta src/ con todo el código
+- Carpeta docs/ con evidencias y capturas
+- 35 archivos en total
+
+### Credenciales para ejecutar:
+Usuario: admin / Contraseña: 1234
+Usuario: operador / Contraseña: op123
+
+### Para ejecutar localmente:
+cd C:\Users\enman\Desktop\pixel-and-bean-master
+javac -d out (Get-ChildItem -Recurse -Filter *.java).FullName
+java -cp out cl.enmanuelchirinos.pnb.PixelAndBean
+
+### Próximos pasos (Clase 3):
+- Refactorización a MVC completo
+- Separación de controladores
+- Preparación para JDBC
+- Validaciones en capa de servicio
+
+---
+ENTREGA COMPLETADA - Puedes descansar tranquilo!
+Todo está en GitHub y listo para presentar.
+
