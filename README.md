@@ -186,7 +186,7 @@ git push -u origin main
 ```
 
 ### Hash del commit de la Entrega 2
-`<HASH_COMMIT>` (será reemplazado automáticamente cuando se ejecute el commit aquí).
+`5acdb04a4717b43affd4042d14c81b04bc1404cf`
 
 Si el repositorio ya existe y sólo actualizas:
 ```powershell
