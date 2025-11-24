@@ -1,8 +1,23 @@
 # Pixel & Bean - Sistema de Gestión Café-Arcade
 
-Pixel & Bean es un prototipo de sistema de gestión para café-arcade desarrollado en Java Swing. El sistema permite gestionar usuarios, productos, ventas y generar reportes, todo con almacenamiento en memoria mediante servicios stub.
+Pixel & Bean es un sistema completo de gestión para café-arcade desarrollado en Java Swing. El sistema permite gestionar usuarios, productos, ventas y generar reportes, todo con almacenamiento en memoria mediante servicios stub.
 
-## Características
+## 🚀 Inicio Rápido
+
+```bash
+# Ejecutar aplicación (Linux/macOS)
+./run.sh
+
+# Ejecutar aplicación (Windows)
+run.bat
+
+# Ejecutar tests
+./test.sh
+```
+
+**Login**: `admin` / `admin123`
+
+## 📋 Características Principales
 
 ### ✅ Sistema de Autenticación
 - Login con roles: **ADMIN** y **OPERADOR**
