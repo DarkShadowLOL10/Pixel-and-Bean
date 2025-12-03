@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Generar pantallazos CLASE3",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"tools/export_code_images.py",
+				"--src",
+				"src/cl/enmanuelchirinos/pnb",
+				"--out",
+				"docs/entregas/CLASE3-EVIDENCIAS"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Generar pantallazos CLASE3",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"\"C:/Users/enman/Documents/POO_Duoc/2 semestre/pixel-and-bean-master/tools/export_code_images.py\"",
+				"--src",
+				"\"C:/Users/enman/Documents/POO_Duoc/2 semestre/pixel-and-bean-master/src/cl/enmanuelchirinos/pnb\"",
+				"--out",
+				"\"C:/Users/enman/Documents/POO_Duoc/2 semestre/pixel-and-bean-master/docs/entregas/CLASE3-EVIDENCIAS\""
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
