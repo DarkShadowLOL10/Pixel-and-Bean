@@ -238,8 +238,7 @@ Implementar arquitectura MVC con Inyección de Dependencias (DI) y patrones de d
 
 ---
 
-**Desarrollado por**: [Tu Nombre]  
+**Desarrollado por**: Enmanuel Chirinos  
 **Fecha**: 3 de diciembre de 2025  
 **Asignatura**: Programación Orientada a Objetos  
 **Institución**: DuocUC
-
