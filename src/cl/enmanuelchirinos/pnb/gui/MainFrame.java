@@ -1,16 +1,14 @@
 package cl.enmanuelchirinos.pnb.gui;
 
+import cl.enmanuelchirinos.pnb.app.ApplicationContext;
+import cl.enmanuelchirinos.pnb.controller.ProductoController;
+import cl.enmanuelchirinos.pnb.controller.UsuarioController;
+import cl.enmanuelchirinos.pnb.controller.VentaController;
 import cl.enmanuelchirinos.pnb.gui.panels.EventosPanel;
 import cl.enmanuelchirinos.pnb.gui.panels.ProductosPanel;
 import cl.enmanuelchirinos.pnb.gui.panels.ReportesPanel;
 import cl.enmanuelchirinos.pnb.gui.panels.UsuariosPanel;
 import cl.enmanuelchirinos.pnb.gui.panels.VentasPanel;
-import cl.enmanuelchirinos.pnb.service.ProductoService;
-import cl.enmanuelchirinos.pnb.service.UsuarioService;
-import cl.enmanuelchirinos.pnb.service.VentaService;
-import cl.enmanuelchirinos.pnb.service.impl.ProductoServiceStub;
-import cl.enmanuelchirinos.pnb.service.impl.UsuarioServiceStub;
-import cl.enmanuelchirinos.pnb.service.impl.VentaServiceStub;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +18,7 @@ import java.util.Date;
 /**
  * Frame principal de la aplicación con menú completo
  * Incluye barra de estado con información del usuario
+ * Ahora usa arquitectura MVC con ApplicationContext
  */
 public class MainFrame extends JFrame {
 
@@ -39,10 +38,10 @@ public class MainFrame extends JFrame {
     private JPanel contentPanel; // Panel con CardLayout
     private CardLayout cardLayout;
 
-    // Servicios stub
-    private ProductoService productoService;
-    private UsuarioService usuarioService;
-    private VentaService ventaService;
+    // Controladores (arquitectura MVC)
+    private ProductoController productoController;
+    private UsuarioController usuarioController;
+    private VentaController ventaController;
 
     // Paneles (lazy init)
     private UsuariosPanel usuariosPanel;
@@ -63,10 +62,11 @@ public class MainFrame extends JFrame {
         this.currentUser = username;
         this.currentRole = role;
 
-        // Inicializar servicios stub
-        this.productoService = new ProductoServiceStub();
-        this.usuarioService = new UsuarioServiceStub();
-        this.ventaService = new VentaServiceStub();
+        // Obtener controladores del ApplicationContext
+        ApplicationContext context = ApplicationContext.getInstance();
+        this.productoController = context.getProductoController();
+        this.usuarioController = context.getUsuarioController();
+        this.ventaController = context.getVentaController();
 
         initComponents();
         setupFrame();
@@ -334,7 +334,7 @@ public class MainFrame extends JFrame {
 
     private void ensureUsuariosPanel() {
         if (usuariosPanel == null) {
-            usuariosPanel = new UsuariosPanel(usuarioService);
+            usuariosPanel = new UsuariosPanel(usuarioController);
             contentPanel.add(usuariosPanel, CARD_USUARIOS);
         }
         usuariosPanel.refresh();
@@ -342,7 +342,7 @@ public class MainFrame extends JFrame {
 
     private void ensureProductosPanel() {
         if (productosPanel == null) {
-            productosPanel = new ProductosPanel(productoService);
+            productosPanel = new ProductosPanel(productoController);
             contentPanel.add(productosPanel, CARD_PRODUCTOS);
         }
         productosPanel.refresh();
@@ -350,7 +350,7 @@ public class MainFrame extends JFrame {
 
     private void ensureVentasPanel() {
         if (ventasPanel == null) {
-            ventasPanel = new VentasPanel(ventaService, productoService, currentUser);
+            ventasPanel = new VentasPanel(ventaController, productoController, currentUser);
             contentPanel.add(ventasPanel, CARD_VENTAS);
         }
         ventasPanel.refresh();
@@ -358,7 +358,7 @@ public class MainFrame extends JFrame {
 
     private void ensureReportesPanel() {
         if (reportesPanel == null) {
-            reportesPanel = new ReportesPanel(ventaService, productoService);
+            reportesPanel = new ReportesPanel(ventaController, productoController);
             contentPanel.add(reportesPanel, CARD_REPORTES);
         }
         reportesPanel.refresh();

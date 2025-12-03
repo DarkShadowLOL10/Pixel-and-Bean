@@ -1,11 +1,15 @@
 package cl.enmanuelchirinos.pnb.gui;
 
+import cl.enmanuelchirinos.pnb.app.ApplicationContext;
+import cl.enmanuelchirinos.pnb.controller.UsuarioController;
+import cl.enmanuelchirinos.pnb.model.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
  * Frame de autenticación de usuarios
- * Validación mock: admin/1234 y operador/op123
+ * Ahora usa arquitectura MVC con ApplicationContext
  */
 public class LoginFrame extends JFrame {
 
@@ -17,7 +21,13 @@ public class LoginFrame extends JFrame {
     private JLabel lblUser;
     private JLabel lblPass;
 
+    // Controlador (inyección de dependencias)
+    private UsuarioController usuarioController;
+
     public LoginFrame() {
+        // Obtener controlador del ApplicationContext
+        usuarioController = ApplicationContext.getInstance().getUsuarioController();
+
         initComponents();
         setupFrame();
     }
@@ -95,7 +105,7 @@ public class LoginFrame extends JFrame {
         mainPanel.add(btnLogin, gbc);
 
         // Información de prueba
-        JLabel lblInfo = new JLabel("<html><center>Credenciales de prueba:<br/>admin / 1234<br/>operador / op123</center></html>");
+        JLabel lblInfo = new JLabel("<html><center>Credenciales de prueba:<br/>admin / admin123<br/>operador1 / op123</center></html>");
         lblInfo.setFont(new Font("Segoe UI", Font.ITALIC, 11));
         lblInfo.setForeground(new Color(150, 150, 150));
         lblInfo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -131,23 +141,27 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        // Validación mock de credenciales
-        if ((user.equals("admin") && pass.equals("1234")) ||
-            (user.equals("operador") && pass.equals("op123"))) {
-
-            // Determinar rol
-            String rol = user.equals("admin") ? "ADMIN" : "OPERADOR";
+        try {
+            // Autenticar usando el controlador (arquitectura MVC)
+            Usuario usuario = usuarioController.autenticar(user, pass);
 
             // Login exitoso
-            MainFrame main = new MainFrame(user, rol);
+            JOptionPane.showMessageDialog(this,
+                "¡Bienvenido " + usuario.getNombreCompleto() + "!",
+                "Login exitoso",
+                JOptionPane.INFORMATION_MESSAGE);
+
+            // Abrir ventana principal
+            MainFrame main = new MainFrame(usuario.getUsername(), usuario.getRol());
             main.setVisible(true);
 
             // Cerrar login y liberar recursos
             this.dispose();
-        } else {
-            // Login fallido
+
+        } catch (Exception e) {
+            // Login fallido - mostrar mensaje de error
             JOptionPane.showMessageDialog(this,
-                "Usuario o contraseña incorrectos",
+                e.getMessage(),
                 "Error de autenticación",
                 JOptionPane.ERROR_MESSAGE);
 

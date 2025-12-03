@@ -1,9 +1,9 @@
 package cl.enmanuelchirinos.pnb.gui.panels;
 
+import cl.enmanuelchirinos.pnb.controller.ProductoController;
+import cl.enmanuelchirinos.pnb.controller.VentaController;
 import cl.enmanuelchirinos.pnb.model.Venta;
 import cl.enmanuelchirinos.pnb.model.Producto;
-import cl.enmanuelchirinos.pnb.service.ProductoService;
-import cl.enmanuelchirinos.pnb.service.VentaService;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReportesPanel extends JPanel {
-    private final VentaService ventaService;
-    private final ProductoService productoService;
+    private final VentaController ventaController;
+    private final ProductoController productoController;
     private JTable tableVentasDia;
     private VentasDiaTableModel ventasDiaTableModel;
     private JLabel lblTotalDia;
@@ -27,9 +27,9 @@ public class ReportesPanel extends JPanel {
     private TopProductosTableModel topModel;
     private JLabel lblTopTitulo;
 
-    public ReportesPanel(VentaService ventaService, ProductoService productoService) {
-        this.ventaService = ventaService;
-        this.productoService = productoService;
+    public ReportesPanel(VentaController ventaController, ProductoController productoController) {
+        this.ventaController = ventaController;
+        this.productoController = productoController;
         setLayout(new BorderLayout());
         initComponents();
         loadData();
@@ -73,16 +73,27 @@ public class ReportesPanel extends JPanel {
         List<Venta> filtradas;
         String periodo = (String) cmbPeriodo.getSelectedItem();
         switch (periodo) {
-            case "Ayer" -> filtradas = ventaService.listByDate(hoy.minusDays(1)).stream().filter(v->"ACTIVA".equals(v.getEstado())).toList();
-            case "Última semana" -> filtradas = ventaService.listAll().stream().filter(v -> v.getFechaHora().toLocalDate().isAfter(hoy.minusDays(7)) && v.getFechaHora().toLocalDate().isBefore(hoy.plusDays(1)) && "ACTIVA".equals(v.getEstado())).toList();
-            case "Último mes" -> filtradas = ventaService.listAll().stream().filter(v -> v.getFechaHora().toLocalDate().isAfter(hoy.minusDays(30)) && v.getFechaHora().toLocalDate().isBefore(hoy.plusDays(1)) && "ACTIVA".equals(v.getEstado())).toList();
-            default -> filtradas = ventaService.listToday().stream().filter(v->"ACTIVA".equals(v.getEstado())).toList();
+            case "Ayer" -> filtradas = ventaController.listarDelDia().stream()
+                    .filter(v -> v.getFechaHora().toLocalDate().equals(hoy.minusDays(1)))
+                    .filter(v->"ACTIVA".equals(v.getEstado())).toList();
+            case "Última semana" -> filtradas = ventaController.listarTodas().stream()
+                    .filter(v -> v.getFechaHora().toLocalDate().isAfter(hoy.minusDays(7)) &&
+                                 v.getFechaHora().toLocalDate().isBefore(hoy.plusDays(1)) &&
+                                 "ACTIVA".equals(v.getEstado())).toList();
+            case "Último mes" -> filtradas = ventaController.listarTodas().stream()
+                    .filter(v -> v.getFechaHora().toLocalDate().isAfter(hoy.minusDays(30)) &&
+                                 v.getFechaHora().toLocalDate().isBefore(hoy.plusDays(1)) &&
+                                 "ACTIVA".equals(v.getEstado())).toList();
+            default -> filtradas = ventaController.listarDelDia().stream()
+                    .filter(v->"ACTIVA".equals(v.getEstado())).toList();
         }
         ventasDiaTableModel.setData(filtradas);
         double total = filtradas.stream().mapToDouble(Venta::getTotal).sum();
         lblTotalDia.setText("Total periodo: $" + String.format("%,.0f", total));
         // Top productos simple por precio mayor
-        topModel.setData(productoService.listActive().stream().sorted(Comparator.comparingDouble(Producto::getPrecio).reversed()).limit(5).toList());
+        topModel.setData(productoController.listarActivos().stream()
+                .sorted(Comparator.comparingDouble(Producto::getPrecio).reversed())
+                .limit(5).toList());
     }
 
     public void refresh() { loadData(); }

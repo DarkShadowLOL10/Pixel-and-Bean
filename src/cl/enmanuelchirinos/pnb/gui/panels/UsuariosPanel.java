@@ -1,7 +1,7 @@
 package cl.enmanuelchirinos.pnb.gui.panels;
 
+import cl.enmanuelchirinos.pnb.controller.UsuarioController;
 import cl.enmanuelchirinos.pnb.model.Usuario;
-import cl.enmanuelchirinos.pnb.service.UsuarioService;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 public class UsuariosPanel extends JPanel {
-    private final UsuarioService usuarioService;
+    private final UsuarioController usuarioController;
     private JTable table;
     private UsuariosTableModel tableModel;
     private JTextField txtUsername, txtNombre, txtBuscar;
@@ -21,8 +21,8 @@ public class UsuariosPanel extends JPanel {
     private JCheckBox chkActivo;
     private JButton btnNuevo, btnGuardar, btnEliminar, btnLimpiar, btnCancelar, btnToggleActivo; // cambiar estado, cancelar edición
 
-    public UsuariosPanel(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UsuariosPanel(UsuarioController usuarioController) {
+        this.usuarioController = usuarioController;
         setLayout(new BorderLayout());
         initComponents();
         loadData();
@@ -81,18 +81,18 @@ public class UsuariosPanel extends JPanel {
         add(form, BorderLayout.EAST);
     }
 
-    private void loadData() { tableModel.setData(usuarioService.listAll()); }
+    private void loadData() { tableModel.setData(usuarioController.listarTodos()); }
     private void filter() {
         String txt = txtBuscar.getText().trim();
-        if (txt.isEmpty()) loadData(); else tableModel.setData(usuarioService.searchByUsername(txt));
+        if (txt.isEmpty()) loadData(); else tableModel.setData(usuarioController.buscar(txt));
     }
 
     private void setupSearchListener() {
         txtBuscar.getDocument().addDocumentListener(new DocumentListener() {
             @Override public void insertUpdate(DocumentEvent e){ filterRealtime(); }
             @Override public void removeUpdate(DocumentEvent e){ filterRealtime(); }
-            @Override public void changedUpdate(DocumentEvent e){ }
-            private void filterRealtime() { String txt = txtBuscar.getText().trim(); tableModel.setData(txt.isEmpty()? usuarioService.listAll(): usuarioService.searchByUsername(txt)); }
+            @Override public void changedUpdate(DocumentEvent e){ filterRealtime(); }
+            private void filterRealtime() { String txt = txtBuscar.getText().trim(); tableModel.setData(txt.isEmpty()? usuarioController.listarTodos(): usuarioController.buscar(txt)); }
         });
     }
 
@@ -114,30 +114,45 @@ public class UsuariosPanel extends JPanel {
         String rol = (String) cmbRol.getSelectedItem();
         boolean activo = chkActivo.isSelected();
         int selected = table.getSelectedRow();
-        if (selected >= 0) {
-            Usuario original = tableModel.getAt(selected);
-            Usuario actualizado = new Usuario(original.getId(), username, password, nombre, rol, activo);
-            usuarioService.update(actualizado);
-        } else {
-            usuarioService.add(new Usuario(0, username, password, nombre, rol, activo));
+
+        try {
+            if (selected >= 0) {
+                Usuario original = tableModel.getAt(selected);
+                usuarioController.actualizarUsuario(original.getId(), username, password, nombre, rol, activo);
+            } else {
+                usuarioController.crearUsuario(username, password, nombre, rol);
+            }
+            loadData(); limpiarFormulario(); JOptionPane.showMessageDialog(this, "Usuario guardado");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        loadData(); limpiarFormulario(); JOptionPane.showMessageDialog(this, "Usuario guardado");
     }
 
     private void eliminar() {
         int row = table.getSelectedRow();
         if (row < 0) { JOptionPane.showMessageDialog(this, "Seleccione un usuario"); return; }
         Usuario u = tableModel.getAt(row);
-        int confirm = JOptionPane.showConfirmDialog(this, "Eliminar usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) { usuarioService.deleteById(u.getId()); loadData(); limpiarFormulario(); }
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar usuario?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                usuarioController.eliminarUsuario(u.getId());
+                loadData(); limpiarFormulario();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private void toggleEstado() {
         int row = table.getSelectedRow();
         if (row < 0) { JOptionPane.showMessageDialog(this, "Seleccione un usuario"); return; }
         Usuario u = tableModel.getAt(row);
-        usuarioService.toggleActive(u.getId(), !u.isActivo());
-        loadData();
+        try {
+            usuarioController.actualizarUsuario(u.getId(), u.getUsername(), u.getPassword(), u.getNombreCompleto(), u.getRol(), !u.isActivo());
+            loadData();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void limpiarFormulario() { txtUsername.setText(""); txtPassword.setText(""); txtNombre.setText(""); cmbRol.setSelectedIndex(0); chkActivo.setSelected(true); table.clearSelection(); }

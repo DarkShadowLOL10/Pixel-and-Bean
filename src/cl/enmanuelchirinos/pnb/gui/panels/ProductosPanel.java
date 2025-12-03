@@ -1,7 +1,7 @@
 package cl.enmanuelchirinos.pnb.gui.panels;
 
+import cl.enmanuelchirinos.pnb.controller.ProductoController;
 import cl.enmanuelchirinos.pnb.model.Producto;
-import cl.enmanuelchirinos.pnb.service.ProductoService;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.List;
 
 public class ProductosPanel extends JPanel {
-    private final ProductoService productoService;
+    private final ProductoController productoController;
     private JTable table;
     private ProductosTableModel tableModel;
     private JTextField txtNombre, txtPrecio, txtBuscar;
@@ -20,8 +20,8 @@ public class ProductosPanel extends JPanel {
     private JButton btnNuevo, btnGuardar, btnEliminar, btnLimpiar, btnToggleActivo; // cambiar estado
     private JComboBox<String> cmbFiltroCategoria; // filtro listado
 
-    public ProductosPanel(ProductoService productoService) {
-        this.productoService = productoService;
+    public ProductosPanel(ProductoController productoController) {
+        this.productoController = productoController;
         setLayout(new BorderLayout());
         initComponents();
         loadData();
@@ -102,7 +102,7 @@ public class ProductosPanel extends JPanel {
     }
 
     private void loadData() {
-        tableModel.setData(productoService.listAll());
+        tableModel.setData(productoController.listarTodos());
     }
 
     private void initListeners() {
@@ -131,9 +131,9 @@ public class ProductosPanel extends JPanel {
         String categoriaFiltro = (String) cmbFiltroCategoria.getSelectedItem();
         List<Producto> base;
         if ("TODAS".equals(categoriaFiltro)) {
-            base = productoService.listAll();
+            base = productoController.listarTodos();
         } else {
-            base = productoService.listAll().stream().filter(p -> p.getCategoria().equalsIgnoreCase(categoriaFiltro)).toList();
+            base = productoController.listarPorCategoria(categoriaFiltro);
         }
         if (texto.isEmpty()) {
             tableModel.setData(base);
@@ -163,28 +163,35 @@ public class ProductosPanel extends JPanel {
         String categoria = (String) cmbCategoria.getSelectedItem();
         String tipo = (String) cmbTipo.getSelectedItem();
 
-        int selected = table.getSelectedRow();
-        if (selected >= 0) {
-            Producto original = tableModel.getAt(selected);
-            Producto actualizado = new Producto(original.getId(), nombre, categoria, tipo, precio, original.isActivo());
-            productoService.update(actualizado);
-        } else {
-            productoService.add(new Producto(0, nombre, categoria, tipo, precio, true));
+        try {
+            int selected = table.getSelectedRow();
+            if (selected >= 0) {
+                Producto original = tableModel.getAt(selected);
+                productoController.actualizarProducto(original.getId(), nombre, categoria, tipo, precio, original.isActivo());
+            } else {
+                productoController.crearProducto(nombre, categoria, tipo, precio);
+            }
+            loadData();
+            limpiarFormulario();
+            JOptionPane.showMessageDialog(this, "Producto guardado");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        loadData();
-        limpiarFormulario();
-        JOptionPane.showMessageDialog(this, "Producto guardado");
     }
 
     private void eliminar() {
         int row = table.getSelectedRow();
         if (row < 0) { JOptionPane.showMessageDialog(this, "Seleccione un producto"); return; }
         Producto p = tableModel.getAt(row);
-        int confirm = JOptionPane.showConfirmDialog(this, "Eliminar producto?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Eliminar producto?", "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            productoService.deleteById(p.getId());
-            loadData();
-            limpiarFormulario();
+            try {
+                productoController.eliminarProducto(p.getId());
+                loadData();
+                limpiarFormulario();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -192,8 +199,12 @@ public class ProductosPanel extends JPanel {
         int row = table.getSelectedRow();
         if (row < 0) { JOptionPane.showMessageDialog(this, "Seleccione un producto"); return; }
         Producto p = tableModel.getAt(row);
-        productoService.toggleActive(p.getId(), !p.isActivo());
-        loadData();
+        try {
+            productoController.cambiarEstadoProducto(p.getId());
+            loadData();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void limpiarFormulario() {

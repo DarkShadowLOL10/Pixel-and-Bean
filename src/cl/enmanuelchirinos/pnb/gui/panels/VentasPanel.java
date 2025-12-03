@@ -1,10 +1,10 @@
 package cl.enmanuelchirinos.pnb.gui.panels;
 
+import cl.enmanuelchirinos.pnb.controller.ProductoController;
+import cl.enmanuelchirinos.pnb.controller.VentaController;
 import cl.enmanuelchirinos.pnb.model.ItemVenta;
 import cl.enmanuelchirinos.pnb.model.Producto;
 import cl.enmanuelchirinos.pnb.model.Venta;
-import cl.enmanuelchirinos.pnb.service.ProductoService;
-import cl.enmanuelchirinos.pnb.service.VentaService;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class VentasPanel extends JPanel {
-    private final VentaService ventaService;
-    private final ProductoService productoService;
+    private final VentaController ventaController;
+    private final ProductoController productoController;
     private final String currentUser;
 
     private JTable tableVentas, tableDetalle, tableProductos;
@@ -33,9 +33,9 @@ public class VentasPanel extends JPanel {
 
     private List<ItemVenta> detalle = new ArrayList<>();
 
-    public VentasPanel(VentaService ventaService, ProductoService productoService, String currentUser) {
-        this.ventaService = ventaService;
-        this.productoService = productoService;
+    public VentasPanel(VentaController ventaController, ProductoController productoController, String currentUser) {
+        this.ventaController = ventaController;
+        this.productoController = productoController;
         this.currentUser = currentUser;
         setLayout(new BorderLayout());
         initComponents();
@@ -80,8 +80,8 @@ public class VentasPanel extends JPanel {
     }
 
     private void loadData() {
-        ventasTableModel.setData(ventaService.listAll());
-        productosVentaTableModel.setData(productoService.listAll());
+        ventasTableModel.setData(ventaController.listarTodas());
+        productosVentaTableModel.setData(productoController.listarActivos());
         updateTotal();
     }
 
@@ -112,22 +112,28 @@ public class VentasPanel extends JPanel {
     private void confirmarVenta() {
         if (detalle.isEmpty()) { JOptionPane.showMessageDialog(this, "No hay productos en el detalle"); return; }
         double total = detalle.stream().mapToDouble(ItemVenta::getSubtotal).sum();
-        Venta v = new Venta(0, LocalDateTime.now(), 0, currentUser, total, "ACTIVA");
-        ventaService.add(v);
-        ventasTableModel.setData(ventaService.listAll());
-        detalle.clear();
-        detalleTableModel.setData(detalle);
-        updateTotal();
-        JOptionPane.showMessageDialog(this, "Venta registrada");
+        try {
+            ventaController.registrarVenta(0, currentUser, total);
+            ventasTableModel.setData(ventaController.listarTodas());
+            detalle.clear();
+            detalleTableModel.setData(detalle);
+            updateTotal();
+            JOptionPane.showMessageDialog(this, "Venta registrada");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void anularVenta() {
         int row = tableVentas.getSelectedRow();
         if (row < 0) { JOptionPane.showMessageDialog(this, "Seleccione una venta"); return; }
         Venta v = ventasTableModel.getAt(row);
-        v.setEstado("ANULADA");
-        ventaService.update(v);
-        ventasTableModel.setData(ventaService.listAll());
+        try {
+            ventaController.anularVenta(v.getId());
+            ventasTableModel.setData(ventaController.listarTodas());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void updateTotal() {
