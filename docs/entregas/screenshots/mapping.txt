@@ -1,0 +1,17 @@
+# Mapeo de Archivos - Clase 3
+# Formato: Número | Archivo Fuente | Captura PNG
+--------------------------------------------------------------------------------
+
+01 | repository/IUsuarioRepository.java | 01_IUsuarioRepository.png
+02 | repository/IProductoRepository.java | 02_IProductoRepository.png
+03 | repository/IVentaRepository.java | 03_IVentaRepository.png
+04 | repository/mock/UsuarioRepositoryMock.java | 04_UsuarioRepositoryMock.png
+05 | repository/mock/ProductoRepositoryMock.java | 05_ProductoRepositoryMock.png
+06 | repository/mock/VentaRepositoryMock.java | 06_VentaRepositoryMock.png
+07 | service/UsuarioService.java | 07_UsuarioService.png
+08 | service/ProductoService.java | 08_ProductoService.png
+09 | service/VentaService.java | 09_VentaService.png
+10 | controller/UsuarioController.java | 10_UsuarioController.png
+11 | controller/ProductoController.java | 11_ProductoController.png
+12 | controller/VentaController.java | 12_VentaController.png
+13 | app/ApplicationContext.java | 13_ApplicationContext.png
