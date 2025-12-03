@@ -394,4 +394,30 @@ public class MainFrame extends JFrame {
             "Acerca de Pixel & Bean",
             JOptionPane.INFORMATION_MESSAGE);
     }
+
+    // Métodos públicos para auto-capturas: mostrar cada panel
+    public void showUsuarios() {
+        ensureUsuariosPanel();
+        showCard(CARD_USUARIOS);
+    }
+
+    public void showProductos() {
+        ensureProductosPanel();
+        showCard(CARD_PRODUCTOS);
+    }
+
+    public void showVentas() {
+        ensureVentasPanel();
+        showCard(CARD_VENTAS);
+    }
+
+    public void showReportes() {
+        ensureReportesPanel();
+        showCard(CARD_REPORTES);
+    }
+
+    public void showEventos() {
+        ensureEventosPanel();
+        showCard(CARD_EVENTOS);
+    }
 }

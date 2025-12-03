@@ -307,6 +307,34 @@ private final IUsuarioRepository repository; // ✅
 
 ---
 
+## 🖼️ Así se ve la aplicación (Evidencias de ejecución)
+
+Las capturas de la aplicación en funcionamiento se encuentran en:
+`docs/entregas/CLASE3-EVIDENCIAS/EJECUCION-APP/`
+
+- login.png – Pantalla de inicio de sesión
+- main.png – Ventana principal con menú
+- usuarios.png – Módulo Usuarios (listado/CRUD)
+- productos.png – Módulo Productos (listado/filtros)
+- ventas.png – Módulo Ventas (registro/anulación)
+- reportes.png – Módulo Reportes (períodos y totales)
+
+## 🔧 Generador de capturas automáticas
+
+El código del generador de capturas automáticas está en:
+`docs/entregas/CLASE3-EVIDENCIAS/GENERADOR-CAPTURAS/`
+
+- PixelAndBeanAutoCapture.java – Runner para abrir y capturar
+- ScreenshotUtil.java – Utilitario de screenshots
+
+Para re-ejecutar:
+1. Compilar:
+   `javac -d build/classes -encoding UTF-8 src/cl/enmanuelchirinos/pnb/gui/ScreenshotUtil.java src/cl/enmanuelchirinos/pnb/PixelAndBeanAutoCapture.java`
+2. Ejecutar:
+   `java -cp build/classes cl.enmanuelchirinos.pnb.PixelAndBeanAutoCapture`
+
+---
+
 ## 🔗 Enlaces de Entrega
 
 ### GitHub
