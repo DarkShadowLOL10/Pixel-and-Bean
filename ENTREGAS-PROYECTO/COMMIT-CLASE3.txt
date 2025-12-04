@@ -1,0 +1,21 @@
+Proyecto: Pixel & Bean - Clase 3 (Arquitectura MVC + DI)
+
+Resumen del commit principal:
+- Implementación de arquitectura MVC completa
+- Controladores: Usuario, Producto, Venta
+- Servicios con lógica de negocio y validaciones
+- Repositorios Mock (interfaces y memoria)
+- ApplicationContext (IoC container)
+- Actualización de GUI para usar controladores
+- Documentación y evidencias agregadas
+
+Commit principal en GitHub:
+https://github.com/DarkShadowLOL10/Pixel-and-Bean/commit/28311ad
+
+Commits complementarios (organización y evidencias):
+- README y estructura de ENTREGAS-PROYECTO: https://github.com/DarkShadowLOL10/Pixel-and-Bean/commit/f7c538f
+- Limpieza y consolidación de ENTREGAS-PROYECTO: https://github.com/DarkShadowLOL10/Pixel-and-Bean/commit/de4ffe0
+- Scripts y pantallazos de código: https://github.com/DarkShadowLOL10/Pixel-and-Bean/commit/1398e5c
+
+Fecha: 03-12-2025
+Autor: Enmanuel Chirinos
