@@ -85,6 +85,31 @@ java -cp build/classes cl.enmanuelchirinos.pnb.PixelAndBean
 
 ---
 
+## 🖼️ Así se ve la aplicación (Clase 3)
+
+Las capturas de la aplicación en ejecución están organizadas en:
+
+```
+C:\Users\enman\Documents\POO_Duoc\2 semestre\pixel-and-bean-master\ENTREGAS-PROYECTO\entregas\CLASE3-EVIDENCIAS\EJECUCION-APP\
+```
+
+Incluye:
+- login.png – Pantalla de inicio de sesión
+- main.png – Ventana principal
+- usuarios.png – Módulo Usuarios
+- productos.png – Módulo Productos
+- ventas.png – Módulo Ventas
+- reportes.png – Módulo Reportes
+
+El código del generador de capturas automáticas está en:
+```
+ENTREGAS-PROYECTO\entregas\CLASE3-EVIDENCIAS\GENERADOR-CAPTURAS\
+```
+- PixelAndBeanAutoCapture.java
+- ScreenshotUtil.java
+
+---
+
 ## 📞 Información del Alumno
 
 **Nombre**: Enmanuel Chirinos  
@@ -96,4 +121,3 @@ java -cp build/classes cl.enmanuelchirinos.pnb.PixelAndBean
 
 **Fecha de entrega**: 3 de diciembre de 2025  
 **Estado**: ✅ COMPLETADO
-
